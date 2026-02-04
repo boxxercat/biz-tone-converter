@@ -1,0 +1,23 @@
+# Ignore virtual environment directory
+.venv/
+
+# Ignore Python cache directories
+__pycache__/
+*.pyc
+
+# Ignore environment variables file
+.env
+
+# Vercel ignore (if applicable)
+.vercel/
+
+# Editor-specific files
+.idea/
+.vscode/
+*.swp
+*.bak
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
