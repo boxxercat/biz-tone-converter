@@ -20,6 +20,17 @@
       "env": {
         "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
       }
+    },
+    "taskmaster-ai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package=task-master-ai",
+        "task-master-ai"
+      ],
+      "env": {
+        "GOOGLE_API_KEY": "${GOOGLE_API_KEY}"
+      }
     }
   },
   "$version": 2
