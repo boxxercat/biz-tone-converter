@@ -1,0 +1,225 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": "1",
+        "title": "개발 환경 구축 및 프로젝트 구조 설정",
+        "description": "Flask 백엔드와 정적 프론트엔드 구성을 위한 기본 디렉토리 구조를 생성하고 의존성을 설치합니다.",
+        "details": "1. 프로젝트 루트에 `backend/` 및 `frontend/` 디렉토리를 생성합니다.\n2. Python 가상환경(`.venv`)을 설정하고 `flask`, `flask-cors`, `python-dotenv`, `groq` 라이브러리를 설치합니다.\n3. `backend/requirements.txt`를 생성하고 프론트엔드 기본 파일(`index.html`, `style.css`, `script.js`)의 뼈대를 구성합니다.",
+        "testStrategy": "Flask 서버가 에러 없이 실행되는지 확인하고, 프론트엔드 정적 파일이 브라우저에서 정상적으로 로드되는지 확인합니다.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-02-05T04:36:28.013Z"
+      },
+      {
+        "id": "2",
+        "title": "Groq AI API 연동 및 백엔드 기본 API 구현",
+        "description": "Groq AI API를 호출하기 위한 클라이언트를 설정하고 텍스트 변환을 위한 POST 엔드포인트를 생성합니다.",
+        "details": "1. `.env` 파일에 `GROQ_API_KEY`를 설정합니다.\n2. `backend/app.py`에서 `Groq` 클라이언트를 초기화합니다.\n3. `/api/convert` POST 엔드포인트를 생성하여 입력 텍스트와 대상(target) 정보를 받도록 구현합니다.\n4. 단순 전달(Pass-through) 방식으로 AI 응답을 클라이언트에 반환하는 기본 로직을 작성합니다.",
+        "testStrategy": "Postman이나 curl을 사용하여 `/api/convert`에 JSON 데이터를 전송하고 Groq API로부터 응답이 오는지 확인합니다.",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-02-05T04:36:28.022Z"
+      },
+      {
+        "id": "3",
+        "title": "대상별(상사, 동료, 고객) 프롬프트 엔지니어링",
+        "description": "PRD에 정의된 수신자 페르소나에 따라 AI가 적절한 말투로 변환하도록 시스템 프롬프트를 설계합니다.",
+        "details": "1. '상사': 결론 중심의 격식 있는 보고체.\n2. '동료': 협업 중심의 친절하고 명확한 어투.\n3. '고객': 극존칭과 전문성을 강조한 서비스 어투.\n4. 각 대상에 맞는 `System Message`를 백엔드 로직에 상수로 정의하고 API 호출 시 활용합니다.",
+        "testStrategy": "동일한 입력을 제공했을 때 선택한 대상에 따라 말투가 의도한 대로(격식/친절/전문성) 다르게 변환되는지 확인합니다.",
+        "priority": "high",
+        "dependencies": [
+          "2"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-02-05T04:36:28.028Z"
+      },
+      {
+        "id": "4",
+        "title": "반응형 레이아웃 및 UI 컴포넌트 마크업",
+        "description": "PRD의 디자인 가이드를 준수하여 입력창, 결과창, 대상 선택 버튼을 포함한 HTML 구조를 작성합니다.",
+        "details": "1. `frontend/index.html`에 Semantic HTML을 사용하여 카드 기반 레이아웃을 구성합니다.\n2. 대상 선택을 위한 라디오 버튼 또는 탭 UI를 생성합니다.\n3. 텍스트 입력 영역(`textarea`)과 결과 표시 영역을 좌우(데스크톱) 또는 상하(모바일)로 배치합니다.",
+        "testStrategy": "브라우저에서 UI가 깨지지 않고 표시되는지 확인하며, 모바일 뷰포트에서 세로 스택으로 전환되는지 확인합니다.",
+        "priority": "medium",
+        "dependencies": [
+          "1"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-02-05T04:36:28.032Z"
+      },
+      {
+        "id": "5",
+        "title": "CSS 스타일 가이드 적용 및 테마 구현",
+        "description": "제공된 색상 팔레트와 타이포그래피를 적용하여 전문적인 비즈니스 스타일의 UI를 구현합니다.",
+        "details": "1. Primary Color(#4A90E2)와 배경색(#F5F7FA)을 적용합니다.\n2. Pretendard 또는 Noto Sans KR 폰트를 설정합니다.\n3. 카드 컴포넌트에 은은한 그림자(box-shadow)와 둥근 모서리(4px)를 적용합니다.\n4. 버튼 호버 효과 및 포커스 상태의 시각적 피드백을 추가합니다.",
+        "testStrategy": "디자인 가이드의 색상 및 폰트가 실제 화면과 일치하는지 개발자 도구로 검사합니다.",
+        "priority": "medium",
+        "dependencies": [
+          "4"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-02-05T04:36:28.037Z"
+      },
+      {
+        "id": "6",
+        "title": "글자 수 제한 및 실시간 카운터 로직 구현",
+        "description": "최대 500자 입력 제한을 적용하고 실시간으로 글자 수를 사용자에게 표시합니다.",
+        "details": "1. `js/script.js`에서 `input` 이벤트를 리스닝합니다.\n2. `textarea.value.length`를 계산하여 `현재 글자 수 / 500` 형식으로 DOM을 업데이트합니다.\n3. 500자 초과 시 입력을 차단하거나 경고 시각 효과를 부여합니다.",
+        "testStrategy": "텍스트 입력 시 하단 카운터가 즉각적으로 변하는지 확인하고, 500자 이상 입력 시 동작을 검증합니다.",
+        "priority": "low",
+        "dependencies": [
+          "4"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-02-05T04:36:28.045Z"
+      },
+      {
+        "id": "7",
+        "title": "비동기 API 통신 및 로딩 상태 관리",
+        "description": "프론트엔드에서 백엔드로 변환 요청을 보내고 처리 중 상태를 UI에 표시합니다.",
+        "details": "1. `fetch` API를 사용하여 `/api/convert` 엔드포인트에 요청을 보냅니다.\n2. 요청 시작 시 변환 버튼 내부에 스피너 애니메이션을 표시하고 버튼을 비활성화합니다.\n3. 응답 완료 후 결과창에 변환된 텍스트를 출력합니다.",
+        "testStrategy": "변환 버튼 클릭 시 버튼이 로딩 상태로 변하는지, 결과가 우측(또는 하단) 창에 정상 출력되는지 확인합니다.",
+        "priority": "high",
+        "dependencies": [
+          "2",
+          "3",
+          "4"
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "UI 컴포넌트 DOM 요소 참조 및 초기화",
+            "description": "frontend/script.js 파일에서 입력창, 결과창, 변환 버튼 등 주요 UI 요소들을 제어하기 위한 DOM 참조를 설정합니다.",
+            "dependencies": [],
+            "details": "document.getElementById 또는 querySelector를 사용하여 #inputText, #outputText, #convertBtn, #spinner 등의 요소를 변수에 할당합니다. 초기 로드 시 버튼의 이벤트 리스너가 정상적으로 작동할 수 있도록 준비합니다.",
+            "status": "done",
+            "testStrategy": "브라우저 콘솔에서 각 DOM 요소 변수가 null이 아닌 올바른 HTML 요소를 참조하고 있는지 확인합니다.",
+            "updatedAt": "2026-02-05T04:41:59.098Z",
+            "parentId": "undefined"
+          },
+          {
+            "id": 2,
+            "title": "로딩 스피너 CSS 스타일 및 HTML 구조 추가",
+            "description": "변환 버튼 내부에서 작동할 로딩 스피너의 스타일을 정의하고 HTML 구조를 조정합니다.",
+            "dependencies": [],
+            "details": "style.css에 .spinner 클래스를 정의하여 회전 애니메이션(@keyframes rotate)을 구현하고, 초기에는 display: none 처리를 합니다. 버튼 클릭 시 스피너가 보이도록 제어할 준비를 합니다.",
+            "status": "done",
+            "testStrategy": "개발자 도구에서 임의로 spinner 클래스를 활성화했을 때 버튼 내부에 스피너가 의도한 디자인대로 표시되는지 확인합니다.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-05T04:41:59.103Z"
+          },
+          {
+            "id": 3,
+            "title": "Fetch API 기반 비동기 통신 함수 구현",
+            "description": "백엔드 엔드포인트인 /api/convert로 데이터를 전송하고 응답을 받는 async 함수를 작성합니다.",
+            "dependencies": [
+              1
+            ],
+            "details": "async/await 문법을 사용하여 POST 요청을 보냅니다. body에는 입력 텍스트와 대상(target) 정보를 JSON으로 포함하며, Content-Type 헤더를 application/json으로 설정합니다.",
+            "status": "done",
+            "testStrategy": "네트워크 탭을 통해 /api/convert 호출 시 페이로드가 정확하게 전송되는지 확인합니다.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-05T04:41:59.109Z"
+          },
+          {
+            "id": 4,
+            "title": "요청 상태별 UI 제어 및 로딩 처리 로직 통합",
+            "description": "API 요청 시작 시 버튼을 비활성화하고 스피너를 표시하며, 응답 완료 후 원래 상태로 복구하는 로직을 구현합니다.",
+            "dependencies": [
+              2,
+              3
+            ],
+            "details": "변환 버튼의 disabled 속성을 true로 설정하고, 스피너의 style.display를 'inline-block'으로 변경합니다. finally 구문을 사용하여 요청 성공/실패 여부와 상관없이 상태를 복구하도록 합니다.",
+            "status": "done",
+            "testStrategy": "버튼 클릭 즉시 버튼이 클릭 불가능한 상태가 되고 스피너가 나타나는지 시각적으로 검증합니다.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-05T04:41:59.114Z"
+          },
+          {
+            "id": 5,
+            "title": "결과 텍스트 출력 및 응답 데이터 처리",
+            "description": "백엔드로부터 수신한 JSON 응답에서 변환된 텍스트를 추출하여 결과창 영역에 표시합니다.",
+            "dependencies": [
+              4
+            ],
+            "details": "response.json()을 통해 파싱된 데이터 중 결과 텍스트 필드를 추출하여 결과 텍스트 영역(textarea 또는 div)의 value 혹은 textContent 속성에 할당합니다.",
+            "status": "done",
+            "testStrategy": "백엔드 더미 응답을 사용하여 결과창에 텍스트가 줄바꿈 등을 포함하여 올바르게 렌더링되는지 확인합니다.",
+            "parentId": "undefined",
+            "updatedAt": "2026-02-05T04:41:59.117Z"
+          }
+        ],
+        "updatedAt": "2026-02-05T04:41:59.117Z"
+      },
+      {
+        "id": "8",
+        "title": "클립보드 복사 및 알림 피드백 기능",
+        "description": "변환된 결과를 한 번의 클릭으로 복사하고 성공 여부를 시각적으로 알립니다.",
+        "details": "1. `navigator.clipboard.writeText`를 사용하여 복사 기능을 구현합니다.\n2. 복사 성공 시 토스트 메시지나 툴팁으로 \"복사되었습니다!\" 피드백을 표시합니다.\n3. Success 색상(#50E3C2)을 사용하여 긍정적인 경험을 제공합니다.",
+        "testStrategy": "복사 버튼 클릭 후 실제로 메모장 등에 붙여넣기가 되는지 확인하고, 성공 메시지가 노출되는지 테스트합니다.",
+        "priority": "medium",
+        "dependencies": [
+          "7"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-02-05T04:36:28.057Z"
+      },
+      {
+        "id": "9",
+        "title": "오류 처리 및 재시도 로직 구현",
+        "description": "API 실패 또는 네트워크 오류 시 사용자에게 명확한 메시지를 전달하고 재시도를 유도합니다.",
+        "details": "1. `try...catch` 구문을 사용하여 API 호출 에러를 캡처합니다.\n2. 에러 발생 시 Error 색상(#D0021B)의 메시지 박스를 결과창 영역에 표시합니다.\n3. \"다시 시도\" 버튼을 클릭하면 이전 입력값을 그대로 사용하여 재요청하도록 구현합니다.",
+        "testStrategy": "백엔드 서버를 일시 중지하거나 API 키를 무효화하여 에러 메시지가 정상적으로 나타나는지 확인합니다.",
+        "priority": "medium",
+        "dependencies": [
+          "7"
+        ],
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2026-02-05T04:36:28.063Z"
+      },
+      {
+        "id": "10",
+        "title": "최종 검수 및 Vercel 배포 설정",
+        "description": "전체 기능을 점검하고 Vercel 환경에 배포하기 위한 설정을 완료합니다.",
+        "details": "1. `vercel.json`을 작성하여 백엔드 API와 프론트엔드 라우팅을 설정합니다.\n2. Vercel 대시보드에 `GROQ_API_KEY` 환경 변수를 등록합니다.\n3. PRD의 성공 지표인 응답 속도 및 접근성(ARIA 속성 등)을 최종 체크합니다.",
+        "testStrategy": "배포된 URL에서 모든 핵심 플로우(입력-변환-복사)가 정상 작동하는지 실환경 테스트를 수행합니다.",
+        "priority": "high",
+        "dependencies": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ],
+        "status": "pending",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "lastModified": "2026-02-05T04:41:59.118Z",
+      "taskCount": 10,
+      "completedCount": 9,
+      "tags": [
+        "master"
+      ]
+    }
+  }
+}
