@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const convertBtn = document.getElementById('convert-btn');
     const outputText = document.getElementById('output-text');
     const copyBtn = document.getElementById('copy-btn');
-    const feedbackMsg = document.getElementById('feedback-message');
+    const toastContainer = document.getElementById('toast-container');
     const spinner = convertBtn.querySelector('.spinner');
     const btnText = convertBtn.querySelector('.btn-text');
 
@@ -14,19 +14,22 @@ document.addEventListener('DOMContentLoaded', () => {
         charCount.textContent = `${length} / 500`;
         
         if (length > 500) {
-            charCount.style.color = 'var(--error-color)';
+            charCount.classList.add('text-red-500');
+            charCount.classList.remove('text-slate-400');
         } else {
-            charCount.style.color = 'var(--text-secondary)';
+            charCount.classList.remove('text-red-500');
+            charCount.classList.add('text-slate-400');
         }
     });
 
     // 2. 변환 버튼 클릭 이벤트
     convertBtn.addEventListener('click', async () => {
         const text = inputText.value.trim();
-        const target = document.querySelector('input[name="target"]:checked').value;
+        const targetElement = document.querySelector('input[name="target"]:checked');
+        const target = targetElement ? targetElement.value : 'upward';
 
         if (!text) {
-            alert('변환할 내용을 입력해 주세요.');
+            showToast('변환할 내용을 입력해 주세요.', 'error');
             return;
         }
 
@@ -53,11 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
             outputText.value = data.converted_message;
-            showFeedback('변환이 완료되었습니다!', 'success');
+            showToast('성공적으로 변환되었습니다!', 'success');
 
         } catch (error) {
             console.error('Error:', error);
-            showFeedback(error.message || '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'error');
+            showToast(error.message || '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'error');
         } finally {
             // 로딩 상태 종료
             setLoading(false);
@@ -67,12 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. 복사하기 버튼 클릭 이벤트
     copyBtn.addEventListener('click', () => {
         const text = outputText.value;
-        if (!text) return;
+        if (!text) {
+            showToast('복사할 내용이 없습니다.', 'error');
+            return;
+        }
 
         navigator.clipboard.writeText(text).then(() => {
-            showFeedback('복사되었습니다!', 'success');
+            showToast('클립보드에 복사되었습니다!', 'success');
         }).catch(err => {
             console.error('Copy failed:', err);
+            showToast('복사에 실패했습니다.', 'error');
         });
     });
 
@@ -81,22 +88,39 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isLoading) {
             convertBtn.disabled = true;
             spinner.classList.remove('hidden');
-            btnText.textContent = '변환 중...';
+            btnText.classList.add('opacity-0');
         } else {
             convertBtn.disabled = false;
             spinner.classList.add('hidden');
-            btnText.textContent = '변환하기';
+            btnText.classList.remove('opacity-0');
         }
     }
 
-    // 피드백 메시지 표시 함수
-    function showFeedback(message, type = 'success') {
-        feedbackMsg.textContent = message;
-        feedbackMsg.classList.remove('hidden', 'success', 'error');
-        feedbackMsg.classList.add(type);
+    // Toast 메시지 표시 함수
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
         
+        // Toast 스타일 설정
+        const baseClasses = 'px-6 py-4 rounded-2xl shadow-xl text-white text-sm font-bold flex items-center gap-3 animate-slide-in';
+        const typeClasses = type === 'success' ? 'bg-indigo-600' : 'bg-red-500';
+        
+        toast.className = `${baseClasses} ${typeClasses}`;
+        
+        // 아이콘 추가 (SVG)
+        const icon = type === 'success' 
+            ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>'
+            : '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>';
+        
+        toast.innerHTML = `${icon}<span>${message}</span>`;
+        
+        toastContainer.appendChild(toast);
+
+        // 3초 후 제거 (애니메이션 포함)
         setTimeout(() => {
-            feedbackMsg.classList.add('hidden');
+            toast.classList.replace('animate-slide-in', 'animate-slide-out');
+            toast.addEventListener('animationend', () => {
+                toast.remove();
+            });
         }, 3000);
     }
 });
