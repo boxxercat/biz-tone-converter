@@ -1,0 +1,26 @@
+{
+  "name": "biz-talk",
+  "version": "1.0.0",
+  "description": "Business Tone Converter solution.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./frontend/css/input.css -o ./frontend/css/style.css",
+    "watch": "npx @tailwindcss/cli -i ./frontend/css/input.css -o ./frontend/css/style.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boxxercat/biz-tone-converter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/boxxercat/biz-tone-converter/issues"
+  },
+  "homepage": "https://github.com/boxxercat/biz-tone-converter#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  }
+}
